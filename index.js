@@ -3,7 +3,7 @@ const donet = "soon";
 const owner = ["6285735980188"]; // Put your number here ex: ["62xxxxxxxxx"]
 const {
   default: sansekaiConnect,
-  useMultiFileAuthState,
+  useSingleFileAuthState,
   DisconnectReason,
   fetchLatestBaileysVersion,
   makeInMemoryStore,
@@ -19,7 +19,7 @@ const chalk = require("chalk");
 const figlet = require("figlet");
 const _ = require("lodash");
 const PhoneNumber = require("awesome-phonenumber");
-
+const { state, saveState } = useSingleFileAuthState(`./session.json`);
 const store = makeInMemoryStore({ logger: pino().child({ level: "silent", stream: "store" }) });
 
 const color = (text, color) => {
@@ -134,7 +134,7 @@ function smsg(conn, m, store) {
 }
 
 async function startHisoka() {
-  const { state, saveCreds } = await useMultiFileAuthState(`./${sessionName ? sessionName : "session"}`);
+  
   const { version, isLatest } = await fetchLatestBaileysVersion();
   console.log(`using WA v${version.join(".")}, isLatest: ${isLatest}`);
   console.log(
@@ -286,7 +286,7 @@ async function startHisoka() {
     // console.log('Connected...', update)
   });
 
-  client.ev.on("creds.update", saveCreds);
+  client.ev.on("creds.update", saveState);
 
   const getBuffer = async (url, options) => {
     try {
