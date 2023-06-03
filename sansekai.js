@@ -108,7 +108,7 @@ Jangan spam`)
             if (!text) return reply(`Chat dengan AI.\n\nContoh:\n${prefix}${command} Apa itu resesi`);
             reply("Wait... if no response means error")
             const configuration = new Configuration({
-              apiKey: setting.keyopenai,
+              apiKey: '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',
             });
             const openai = new OpenAIApi(configuration);
 
